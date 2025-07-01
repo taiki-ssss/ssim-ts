@@ -1,0 +1,26 @@
+{
+  "name": "ssim-ts",
+  "version": "1.0.0",
+  "description": "Structural Similarity Index Measure",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taiki-ssss/ssim-ts.git"
+  },
+  "keywords": [],
+  "author": "taiki-ssss",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/taiki-ssss/ssim-ts/issues"
+  },
+  "homepage": "https://github.com/taiki-ssss/ssim-ts#readme",
+  "devDependencies": {
+    "@types/node": "^24.0.10",
+    "@vitest/coverage-v8": "^3.2.4",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4"
+  }
+}

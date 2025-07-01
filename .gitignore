@@ -1,0 +1,13 @@
+.DS_Store
+
+.vscode
+
+.claude
+CLAUDE.md
+.gemini
+GEMINI.md
+.mcp.json
+
+node_modules
+
+dist
