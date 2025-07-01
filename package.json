@@ -2,14 +2,22 @@
   "name": "ssim-ts",
   "version": "1.0.0",
   "description": "Structural Similarity Index Measure",
-  "main": "index.js",
+  "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && chmod 755 dist/index.js",
+    "prepare": "npm run build",
     "test": "vitest run",
     "test:cov": "vitest run --coverage",
     "bench": "vitest bench"
   },
+  "files": [
+    "package.json",
+    "README.md",
+    "LICENSE",
+    "src",
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/taiki-ssss/ssim-ts.git"
