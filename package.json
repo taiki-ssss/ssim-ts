@@ -1,8 +1,9 @@
 {
   "name": "ssim-ts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Structural Similarity Index Measure",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "type": "module",
   "scripts": {
     "build": "tsc && chmod 755 dist/index.js",
