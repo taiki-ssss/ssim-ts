@@ -9,5 +9,6 @@ GEMINI.md
 .mcp.json
 
 node_modules
+coverage
 
 dist
