@@ -1,5 +1,6 @@
 import { bench, describe } from 'vitest';
 import { calculateSSIM, ssim } from '../src/ssim.js';
+import { calculateSSIMFast, ssimFast } from '../src/fast-ssim.js';
 import type { ImageData } from '../src/types.js';
 
 // Generate synthetic test images
@@ -56,6 +57,7 @@ describe('SSIM Performance Benchmarks', () => {
   const xlargeImg1 = generateTestImage(1024, 1024, 'gradient');
   const xlargeImg2 = addNoise(xlargeImg1, 10);
 
+  // Original implementation
   bench('ssim - small images (64x64)', () => {
     ssim(smallImg1, smallImg2);
   });
@@ -70,6 +72,23 @@ describe('SSIM Performance Benchmarks', () => {
 
   bench('ssim - extra large images (1024x1024)', () => {
     ssim(xlargeImg1, xlargeImg2);
+  });
+  
+  // Fast SSIM with integral images
+  bench('ssimFast - small images (64x64)', () => {
+    ssimFast(smallImg1, smallImg2);
+  });
+
+  bench('ssimFast - medium images (256x256)', () => {
+    ssimFast(mediumImg1, mediumImg2);
+  });
+
+  bench('ssimFast - large images (512x512)', () => {
+    ssimFast(largeImg1, largeImg2);
+  });
+
+  bench('ssimFast - extra large images (1024x1024)', () => {
+    ssimFast(xlargeImg1, xlargeImg2);
   });
 
   bench('calculateSSIM with map - medium images', () => {

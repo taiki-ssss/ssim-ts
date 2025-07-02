@@ -44,10 +44,11 @@ function applyGaussianWindow(
   let sum = 0;
   let kernelSum = 0;
 
+  // For even window sizes, we need to adjust the bounds
   const xStart = Math.max(0, x - halfSize);
-  const xEnd = Math.min(width, x + halfSize + 1);
+  const xEnd = Math.min(width, x + halfSize + (windowSize % 2 === 0 ? 0 : 1));
   const yStart = Math.max(0, y - halfSize);
-  const yEnd = Math.min(height, y + halfSize + 1);
+  const yEnd = Math.min(height, y + halfSize + (windowSize % 2 === 0 ? 0 : 1));
 
   for (let py = yStart; py < yEnd; py++) {
     for (let px = xStart; px < xEnd; px++) {
@@ -55,6 +56,8 @@ function applyGaussianWindow(
       const ky = py - y + halfSize;
       const idx = py * width + px;
       const kernelIdx = ky * windowSize + kx;
+      
+      
       const weight = kernel[kernelIdx];
       
       sum += data[idx] * weight;
@@ -89,10 +92,11 @@ function calculateLocalSSIM(
   let weightSum = 0;
 
   const halfSize = Math.floor(windowSize / 2);
+  // For even window sizes, we need to adjust the bounds
   const xStart = Math.max(0, x - halfSize);
-  const xEnd = Math.min(width, x + halfSize + 1);
+  const xEnd = Math.min(width, x + halfSize + (windowSize % 2 === 0 ? 0 : 1));
   const yStart = Math.max(0, y - halfSize);
-  const yEnd = Math.min(height, y + halfSize + 1);
+  const yEnd = Math.min(height, y + halfSize + (windowSize % 2 === 0 ? 0 : 1));
 
   for (let py = yStart; py < yEnd; py++) {
     for (let px = xStart; px < xEnd; px++) {
@@ -100,6 +104,8 @@ function calculateLocalSSIM(
       const ky = py - y + halfSize;
       const idx = py * width + px;
       const kernelIdx = ky * windowSize + kx;
+      
+      
       const weight = kernel[kernelIdx];
       
       const val1 = img1[idx];
@@ -150,7 +156,9 @@ export function calculateSSIM(img1: ImageData, img2: ImageData, options?: SSIMOp
   const C2 = Math.pow(k2 * L, 2);
 
   const { width, height } = img1;
-  const kernel = getOrCreateKernel(windowSize);
+  // Adjust sigma based on window size
+  const sigma = windowSize === 11 ? DEFAULT_SIGMA : Math.max(0.5, windowSize / 6);
+  const kernel = getOrCreateKernel(windowSize, sigma);
   
   const halfSize = Math.floor(windowSize / 2);
   const validWidth = width - 2 * halfSize;
@@ -176,10 +184,14 @@ export function calculateSSIM(img1: ImageData, img2: ImageData, options?: SSIMOp
   }
 
   let sum = 0;
+  let validCount = 0;
   for (let i = 0; i < ssimMap.length; i++) {
-    sum += ssimMap[i];
+    if (!isNaN(ssimMap[i])) {
+      sum += ssimMap[i];
+      validCount++;
+    }
   }
-  const mssim = sum / ssimMap.length;
+  const mssim = validCount > 0 ? sum / validCount : 0;
 
   return {
     mssim,
